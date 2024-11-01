@@ -149,6 +149,8 @@ def forward(q, k, v, q_scale, k_scale):
     BLOCK_N = 64
     HEAD_DIM_K = k.shape[-1]
     o = torch.empty_like(q, dtype=torch.float16)
+
+    # (BS, hz, seqlen)
     lse = torch.empty(
         (q.shape[0], q.shape[1], q.shape[2]), dtype=torch.float32, device=q.device
     )

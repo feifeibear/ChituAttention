@@ -67,6 +67,7 @@ def _sage_attn_forward(
     alibi_slopes=None,
     deterministic=False,
     return_attn_probs=False,
+    ret_lse=False,
 ):
     assert dropout_p == 0.0
     assert softcap == 0.0
@@ -88,5 +89,10 @@ def _sage_attn_forward(
         dropout_p=dropout_p,
         is_causal=causal,
         scale=softmax_scale,
+        ret_lse = ret_lse
     )
-    return output.transpose(1, 2)
+    if ret_lse:
+        o, lse = output
+        return o.transpose(1, 2), lse
+    else:
+        return output.transpose(1, 2)
