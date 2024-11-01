@@ -22,11 +22,14 @@ def _int8_flash_attn_forward(
     return_attn_probs=False,
 ):
 
+    
+    if softmax_scale is None:
+        softmax_scale = 1.0 / (query.shape[-1] ** 0.5)
+        
     assert dropout_p == 0.0
     assert softcap == 0.0
     assert alibi_slopes is None
     assert deterministic == False
-    assert return_attn_probs == False
     assert window_size == (-1, -1)
 
     query = query.transpose(1, 2)
@@ -73,7 +76,6 @@ def _sage_attn_forward(
     assert softcap == 0.0
     assert alibi_slopes is None
     assert deterministic == False
-    assert return_attn_probs == False
     assert window_size == (-1, -1)
 
     # Convert window_size to attn_mask if needed
@@ -81,6 +83,11 @@ def _sage_attn_forward(
     query = query.transpose(1, 2)
     key = key.transpose(1, 2)
     value = value.transpose(1, 2)
+    
+    if softmax_scale is None:
+        softmax_scale = 1.0 / (query.shape[-1] ** 0.5)
+
+
     output = sageattn(
         query,
         key,
