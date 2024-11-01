@@ -8,7 +8,7 @@ ChituAttention is a comprehensive library of quantized Attention implementations
 
 This library is designed for Attention computations for long sequences, where Attention calculations typically dominate the computational time compared to subsequent FFN operations. By quantizing the softmax(QK^T)V computation, ChituAttention achieves significant speedups.
 
-We've collected implementations from two leading Quantized Attention repositories, i.e. [SageAttention](https://github.com/OpenBMB/Sage-Attention) and [Int8FlashAttention](https://github.com/OpenBMB/Int8-FlashAttention), unified their interfaces with FlashAttention. Chitu is designed to integrate seamlessly with the sequence parallel processing in the [feifeibear/Long-Context-Attention](https://github.com/feifeibear/long-context-attention) repository.
+We've collected implementations from two leading Quantized Attention repositories, i.e. [thu-ml/SageAttention](https://github.com/thu-ml/SageAttention) and [INT-FlashAttention](https://github.com/INT-FlashAttention2024/INT-FlashAttention), unified their interfaces with FlashAttention. Chitu is designed to integrate seamlessly with the sequence parallel processing in the [feifeibear/Long-Context-Attention](https://github.com/feifeibear/long-context-attention) repository.
 
 ## Why a Separate Repository?
 

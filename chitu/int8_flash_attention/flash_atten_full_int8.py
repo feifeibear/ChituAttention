@@ -190,7 +190,7 @@ def _attn_fwd_full_int8(
     offs_n = tl.arange(0, BLOCK_N)
     # initialize pointer to m and l
     m_i = tl.zeros([BLOCK_M], dtype=tl.float32) - float("inf")
-    l_i = tl.zeros([BLOCK_M], dtype=tl.float32) + 1.0
+    l_i = tl.zeros([BLOCK_M], dtype=tl.float32)
     acc = tl.zeros([BLOCK_M, HEAD_DIM], dtype=tl.float32)
     # load scales
     qk_scale = sm_scale
@@ -279,9 +279,6 @@ class _attention_full_int8(torch.autograd.Function):
             1,
         )
 
-        print(
-            q.device, k.device, v.device, q_scale.device, k_scale.device, v_scale.device
-        )
         torch.cuda.synchronize()
         _attn_fwd_full_int8[grid](
             q,
