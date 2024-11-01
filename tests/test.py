@@ -61,7 +61,7 @@ def test_attention(q, k, v, is_causal):
     print(f"Max absolute difference: {torch.max(torch.abs(int8_out - int8_out_ref))}")
     print(f"Mean absolute difference: {torch.mean(torch.abs(int8_out - int8_out_ref))}")
 
-    sage_out = _sage_attn_forward(q, k, v, causal=is_causal)
+    sage_out, lse = _sage_attn_forward(q, k, v, causal=is_causal, ret_lse=True)
 
     block_out, _, _, _, _, block_lse, _, _ = _flash_attn_forward(
         q,
@@ -75,6 +75,12 @@ def test_attention(q, k, v, is_causal):
         alibi_slopes=None,
         return_softmax=False,
     )
+
+    if lse is not None:
+        print("LSE DIFF (sage vs FA):")
+        print(f"Max absolute difference: {torch.max(torch.abs(lse - block_lse))}")
+        print(f"Mean absolute difference: {torch.mean(torch.abs(lse - block_lse))}")
+
     print("OUT DIFF (FA vs int8_ref):")
     print(f"Max absolute difference: {torch.max(torch.abs(block_out - int8_out_ref))}")
     print(
