@@ -52,7 +52,8 @@ def _attn_fwd_inner(
     lse_i = tl.math.log(l_i.to(tl.float32)) + m_i
     return acc, l_i, lse_i
 
-
+# feifeibear: I guess the code is copied from the following link
+# https://triton-lang.org/main/getting-started/tutorials/06-fused-attention.html
 @triton.jit
 def _attn_fwd(
     Q,
@@ -109,7 +110,7 @@ def _attn_fwd(
     )
 
     m_i = tl.zeros([BLOCK_M], dtype=tl.float32) - float("inf")
-    l_i = tl.zeros([BLOCK_M], dtype=tl.float32)
+    l_i = tl.zeros([BLOCK_M], dtype=tl.float32) + 1.0
     acc = tl.zeros([BLOCK_M, HEAD_DIM], dtype=tl.float32)
 
     q = tl.load(Q_ptrs, mask=offs_m[:, None] < N_CTX)
