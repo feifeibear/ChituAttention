@@ -80,6 +80,9 @@ def test_attention(q, k, v, is_causal):
         print("LSE DIFF (sage vs FA):")
         print(f"Max absolute difference: {torch.max(torch.abs(lse - block_lse))}")
         print(f"Mean absolute difference: {torch.mean(torch.abs(lse - block_lse))}")
+        relative_error = torch.abs(lse - block_lse) / (torch.abs(block_lse) + 1e-6)
+        print(f"Max relative difference: {torch.max(relative_error)}")
+        print(f"Mean relative difference: {torch.mean(relative_error)}")
 
     print("OUT DIFF (FA vs int8_ref):")
     print(f"Max absolute difference: {torch.max(torch.abs(block_out - int8_out_ref))}")

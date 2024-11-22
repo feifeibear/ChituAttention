@@ -19,6 +19,15 @@ We maintain this dedicated repository because both SageAttention and Int8FlashAt
 - Ensure robust performance across a wider range of use cases
 - Applied in Sequence Parallel USP
 
+## Known Issues
+
+- LSE returned by SageAttention has a huge diff with the FlashAttention V2.
+
+## Installation
+
+```bash
+pip install .
+```
 
 ## Performance
 
