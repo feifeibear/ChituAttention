@@ -3,8 +3,12 @@ from flash_attn.flash_attn_interface import _flash_attn_forward
 from chitu.int8_flash_attention.flash_atten_int8 import attention_int8
 from chitu.int8_flash_attention.flash_atten_full_int8 import attention_full_int8
 from chitu.int8_flash_attention.quant import quant_pertoken, quant_pertensor
-from chitu.sageattention.core import sageattn
 
+try:
+    from sageattention import sageattn
+except ImportError:
+    raise ImportError("SageAttention is not installed. Please install it by `pip install sageattn`.")
+    
 import torch
 
 
@@ -88,18 +92,14 @@ def _sage_attn_forward(
         softmax_scale = 1.0 / (query.shape[-1] ** 0.5)
 
 
-    output = sageattn(
+    output, lse = sageattn(
         query,
         key,
         value,
         attn_mask=attn_mask,
         dropout_p=dropout_p,
         is_causal=causal,
-        scale=softmax_scale,
-        ret_lse = ret_lse
+        sm_scale=softmax_scale,
+        return_lse=True,
     )
-    if ret_lse:
-        o, lse = output
-        return o.transpose(1, 2), lse
-    else:
-        return output.transpose(1, 2)
+    return o.transpose(1, 2), lse

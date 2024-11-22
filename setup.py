@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="chitu",
-    version="0.1",
+    version="0.2",
     author="Jiarui Fang, SageAttention Team, Int8_flash_attn Team",
     author_email="fangjiarui@gmail.com",
     packages=find_packages(),
@@ -12,6 +12,9 @@ setup(
     url="",
     license="MIT",
     python_requires=">=3.9",
+    install_requires=[
+        "sageattn==1.0.6",
+    ],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
